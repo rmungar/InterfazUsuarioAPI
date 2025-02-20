@@ -90,3 +90,6 @@ fun comprobarUsuarioPassword(username: String?, password: String?): Boolean {
         return false
     }
 }
+
+
+fun getLoginToken():
