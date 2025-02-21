@@ -145,7 +145,7 @@ suspend fun getLoginToken(username: String, password: String): String {
         if (tokenResponse.isSuccessful) {
             print(tokenResponse.body())
             val token = tokenResponse.body() ?: ""
-            return token.toString()
+            return token.toString().replace("TokenResponse(","").replace(")","")
         }
         else{
             // Si la respuesta no es exitosa, obtenemos el código de error y el mensaje

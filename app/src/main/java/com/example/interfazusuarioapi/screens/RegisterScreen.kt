@@ -177,6 +177,8 @@ fun RegisterScreen(innerPaddingValues: PaddingValues, navController: NavControll
                                 cp = ""
                                 provincia = ""
                                 num = ""
+
+                                navController.popBackStack()
                             }
                             else {
                                 Toast.makeText(localContext, "Credenciales incorrectas", Toast.LENGTH_SHORT).show()
