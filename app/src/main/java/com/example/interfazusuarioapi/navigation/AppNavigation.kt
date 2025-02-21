@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.interfazusuarioapi.navigation.AppScreens
+import com.example.interfazusuarioapi.screens.MainScreen
 import screens.LoginScreen
 import screens.RegisterScreen
 import screens.WelcomeScreen
@@ -25,6 +26,13 @@ fun AppNavigation(innerPaddingValues: PaddingValues) {
 
         composable(AppScreens.RegisterScreen.route) {
             RegisterScreen(innerPaddingValues, navControlador)
+        }
+
+        composable(AppScreens.MainScreen.route + "/{token}",
+            arguments = listOf(navArgument("token"){type = NavType.StringType})
+        ) {
+            val token = it.arguments?.getString("token") ?: ""
+            MainScreen(token, innerPaddingValues, navControlador)
         }
 
     }
