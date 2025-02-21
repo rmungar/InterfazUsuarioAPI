@@ -168,7 +168,15 @@ fun RegisterScreen(innerPaddingValues: PaddingValues, navController: NavControll
                             isLoading = false
                             if (result) {
                                 Toast.makeText(localContext, "Registro exitoso", Toast.LENGTH_SHORT).show()
-                                navController.navigate(AppScreens.MainScreen.route + "")
+                                username = ""
+                                password = ""
+                                passwordRepeat = ""
+                                email = ""
+                                calle = ""
+                                municipio = ""
+                                cp = ""
+                                provincia = ""
+                                num = ""
                             }
                             else {
                                 Toast.makeText(localContext, "Credenciales incorrectas", Toast.LENGTH_SHORT).show()

@@ -84,11 +84,12 @@ fun LoginScreen(innerPaddingValues: PaddingValues, navController: NavController)
                         val result = getLoginToken(username, password)
                         withContext(Dispatchers.Main) {
                             isLoading = false
+                            token = result
                             if (token.isNotEmpty()) {
+                                Toast.makeText(localContext, "Login exitoso", Toast.LENGTH_SHORT).show()
                                 navController.navigate(AppScreens.MainScreen.route + "/${token}")
                             }
                             else {
-                                println("TOKEN VACIO")
                                 Toast.makeText(localContext, "Credenciales incorrectas", Toast.LENGTH_SHORT).show()
                             }
                         }
