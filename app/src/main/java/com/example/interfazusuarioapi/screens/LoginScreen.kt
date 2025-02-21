@@ -1,5 +1,6 @@
 package screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,12 +15,14 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -35,6 +38,7 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun LoginScreen(innerPaddingValues: PaddingValues, navController: NavController) {
+    val localContext = LocalContext.current
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var token by remember { mutableStateOf("") }
@@ -79,13 +83,13 @@ fun LoginScreen(innerPaddingValues: PaddingValues, navController: NavController)
                     CoroutineScope(Dispatchers.IO).launch {
                         val result = getLoginToken(username, password)
                         withContext(Dispatchers.Main) {
-                            token = result
                             isLoading = false
                             if (token.isNotEmpty()) {
                                 navController.navigate(AppScreens.MainScreen.route + "/${token}")
                             }
                             else {
                                 println("TOKEN VACIO")
+                                Toast.makeText(localContext, "Credenciales incorrectas", Toast.LENGTH_SHORT).show()
                             }
                         }
                     }

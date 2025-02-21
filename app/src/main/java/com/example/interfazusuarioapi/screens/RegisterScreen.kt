@@ -1,5 +1,6 @@
 package screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -22,14 +23,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.apirestsegura.ApiRestSegura2.Dto.UsuarioRegisterDTO
+import com.apirestsegura.ApiRestSegura2.Model.Direccion
 import com.example.interfazusuarioapi.navigation.AppScreens
+import com.example.interfazusuarioapi.retrofit.API.retrofitService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun RegisterScreen(innerPaddingValues: PaddingValues, navController: NavController) {
-
+    val localContext = LocalContext.current
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordRepeat by remember { mutableStateOf("") }
@@ -39,6 +48,7 @@ fun RegisterScreen(innerPaddingValues: PaddingValues, navController: NavControll
     var municipio by remember { mutableStateOf("") }
     var provincia by remember { mutableStateOf("") }
     var cp by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -148,10 +158,88 @@ fun RegisterScreen(innerPaddingValues: PaddingValues, navController: NavControll
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { navController.navigate(AppScreens.MainScreen.route) },
-            modifier = Modifier.width(300.dp)
+            onClick = {
+
+                try{
+                    isLoading = true
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val result = getRegisterResponse(username,password,passwordRepeat,email,calle,num,municipio,provincia,cp)
+                        withContext(Dispatchers.Main) {
+                            isLoading = false
+                            if (result) {
+                                Toast.makeText(localContext, "Registro exitoso", Toast.LENGTH_SHORT).show()
+                                navController.navigate(AppScreens.MainScreen.route + "")
+                            }
+                            else {
+                                Toast.makeText(localContext, "Credenciales incorrectas", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
+                catch (e:Exception) {
+                    println(e)
+                }
+
+            },
+            modifier = Modifier.width(300.dp),
+            enabled = checkData(username,password,passwordRepeat,email,calle,num,municipio,provincia,cp)
         ) {
             Text("Registrarse")
         }
+    }
+}
+
+suspend fun getRegisterResponse(username: String, password: String, passwordRepeat: String, email: String, calle: String, numero: String, municipio: String, provincia: String, codigoPostal: String): Boolean{
+
+    try {
+        val usuarioResponse = retrofitService.register(
+            UsuarioRegisterDTO(
+                username,
+                email,
+                password,
+                passwordRepeat,
+                Direccion(
+                    calle,
+                    numero,
+                    municipio,
+                    provincia,
+                    codigoPostal
+                ),
+                "USER"
+            )
+        )
+
+        if (usuarioResponse.isSuccessful){
+            val usuarioResponseDTO = usuarioResponse.body()
+
+            if (usuarioResponseDTO != null){
+                return true
+            }
+            else{
+                return false
+            }
+        }
+        else{
+            val errorBody = usuarioResponse.errorBody()?.string() ?: "Error desconocido"
+            val errorCode = usuarioResponse.code()
+
+            // Si hay un error, mostramos el código y el mensaje
+            println("Código de error: $errorCode")
+            println("Mensaje de error: $errorBody")
+            return false
+        }
+    }
+    catch (e:Exception){
+        println(e)
+        return false
+    }
+}
+
+fun checkData(username: String, password: String, passwordRepeat: String, email: String, calle: String, numero: String, municipio: String, provincia: String, codigoPostal: String): Boolean {
+    if (username.isEmpty() || password.isEmpty() || passwordRepeat.isEmpty() || email.isEmpty() || calle.isEmpty() || numero.isEmpty() || municipio.isEmpty() || provincia.isEmpty() || codigoPostal.isEmpty()) {
+        return false
+    }
+    else {
+        return true
     }
 }
