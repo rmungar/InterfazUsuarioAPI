@@ -5,7 +5,7 @@ import com.apirestsegura.ApiRestSegura2.Model.Usuario
 import java.util.Date
 
 class TareaCrearDTO(
-    var _id: String? = null,
+    var _id: Int? = null,
     val titulo: String,
     var estado: Boolean = false,
     val descripcion: String,
