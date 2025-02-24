@@ -38,6 +38,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.interfazusuarioapi.Dto.TareaCrearDTO
+import com.example.interfazusuarioapi.retrofit.API
 import com.example.interfazusuarioapi.retrofit.API.retrofitService
 import com.example.interfazusuarioapi.retrofit.ApiService
 import kotlinx.coroutines.CoroutineScope
@@ -167,9 +168,9 @@ fun Option1(navController: NavController) {
                     val fechaActual = Instant.now()
                     val nuevaFecha = Date.from(fechaActual.plus(3, ChronoUnit.DAYS))
                     val formatter = SimpleDateFormat("yyyy-mm-dd")
-                    val usuarioDTO = retrofitService.getUsuario(idUsuario)
+                    val usuarioDTO = retrofitService.getUsuario("Bearer " + API.Token, idUsuario)
                     if (usuarioDTO.isSuccessful){
-                        val result = retrofitService.create(
+                        val result = retrofitService.create( "Bearer " + API.Token,
                             if (usuarioDTO.body() != null){
                                 TareaCrearDTO(
                                     null,
@@ -197,7 +198,7 @@ fun Option1(navController: NavController) {
                         }
                     }
                     else{
-                        throw Exception("ME CAGO EN LA PUTA")
+                        throw Exception("ME CAGO EN LA PUTA 2")
                     }
                 }
             }

@@ -30,12 +30,14 @@ interface ApiService {
 
     @POST("/tareas/crear")
     suspend fun create(
+        @Header("Authorization") token: String,
         @Body requestBody: TareaCrearDTO
     ): Response<TareaDTO>
 
 
     @GET("/usuarios/usuario/{id}")
     suspend fun getUsuario(
+        @Header("Authorization") token: String,
         @Path("id") id: String
     ): Response<UsuarioDTO>
 
