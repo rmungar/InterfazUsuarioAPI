@@ -1,5 +1,8 @@
 package com.example.interfazusuarioapi.screens
 
+import android.os.Build
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -30,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -39,7 +43,14 @@ import com.example.interfazusuarioapi.retrofit.ApiService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+import java.util.Date
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PetitionsScreen(option: String, innerPaddingValues: PaddingValues, navController: NavController){
@@ -81,7 +92,7 @@ fun PetitionsScreen(option: String, innerPaddingValues: PaddingValues, navContro
         Spacer(Modifier.height(40.dp))
         when(option){
             "1" -> {
-                Option1()
+                Option1(navController)
             }
             "2" -> {
                 Option2()
@@ -98,9 +109,10 @@ fun PetitionsScreen(option: String, innerPaddingValues: PaddingValues, navContro
 }
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun Option1() {
-
+fun Option1(navController: NavController) {
+    val localContext = LocalContext.current
     var titulo by remember { mutableStateOf("") }
     var descripcion by remember { mutableStateOf("") }
     var idUsuario by remember { mutableStateOf("") }
@@ -150,19 +162,48 @@ fun Option1() {
     Button(
         onClick = {
 
-            CoroutineScope(Dispatchers.IO).launch{
-                // val result = retrofitService.create(
-                //     TareaCrearDTO(
-                //         null,
-                //         titulo = titulo,
-                //         descripcion = descripcion,
-                //         usuario =
-                //     )
-                // )
+            try {
+                CoroutineScope(Dispatchers.Main).launch{
+                    val fechaActual = Instant.now()
+                    val nuevaFecha = Date.from(fechaActual.plus(3, ChronoUnit.DAYS))
+                    val formatter = SimpleDateFormat("yyyy-mm-dd")
+                    val usuarioDTO = retrofitService.getUsuario(idUsuario)
+                    if (usuarioDTO.isSuccessful){
+                        val result = retrofitService.create(
+                            if (usuarioDTO.body() != null){
+                                TareaCrearDTO(
+                                    null,
+                                    titulo = titulo,
+                                    estado = false,
+                                    descripcion = descripcion,
+                                    usuario = usuarioDTO.body()!!,
+                                    fechaProgramada = formatter.parse(fecha) ?: nuevaFecha
+                                )
+                            }
+                            else{
+                                throw Exception("ME CAGO EN LA PUTA")
+                            }
+                        )
+                        if (result.isSuccessful){
+                            Toast.makeText(localContext, "Tarea Creada", Toast.LENGTH_SHORT).show()
+                            navController.popBackStack()
+                        }
+                        else{
+                            Toast.makeText(localContext, "No se pudo crear la tarea", Toast.LENGTH_SHORT).show()
+                            titulo = ""
+                            descripcion = ""
+                            idUsuario = ""
+                            fecha = ""
+                        }
+                    }
+                    else{
+                        throw Exception("ME CAGO EN LA PUTA")
+                    }
+                }
             }
-
-
-
+            catch (e:Exception){
+                println(e)
+            }
         }
     ) {
         Text("Crear Tarea")

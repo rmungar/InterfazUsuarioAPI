@@ -17,7 +17,7 @@ object API {
         getRetrofit().create(ApiService::class.java)
     }
 
-    val client = OkHttpClient.Builder()
+    var client = OkHttpClient.Builder()
         .addInterceptor(AuthInterceptor(Token))
         .connectTimeout(30, TimeUnit.SECONDS) // Tiempo de espera al conectar
         .readTimeout(30, TimeUnit.SECONDS) // Tiempo de espera para leer la respuesta
@@ -35,6 +35,12 @@ object API {
 
     fun setToken(token:String){
         Token = token
+        client = OkHttpClient.Builder()
+            .addInterceptor(AuthInterceptor(Token))
+            .connectTimeout(30, TimeUnit.SECONDS) // Tiempo de espera al conectar
+            .readTimeout(30, TimeUnit.SECONDS) // Tiempo de espera para leer la respuesta
+            .writeTimeout(30, TimeUnit.SECONDS) // Tiempo de espera para escribir la petición
+            .build()
     }
 
 }
