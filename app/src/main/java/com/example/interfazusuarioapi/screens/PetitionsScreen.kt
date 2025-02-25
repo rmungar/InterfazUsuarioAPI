@@ -178,12 +178,7 @@ fun Option1(navController: NavController) {
                                     estado = false,
                                     descripcion = descripcion,
                                     usuario = usuarioDTO.body()!!,
-                                    fechaProgramada = try {
-                                        formatter.parse(fecha)
-                                    }
-                                    catch (e:Exception){
-                                        nuevaFecha
-                                    }!!
+                                    fechaProgramada = fecha
                                 )
                             }
                             else{
@@ -200,6 +195,7 @@ fun Option1(navController: NavController) {
                             descripcion = ""
                             idUsuario = ""
                             fecha = ""
+                            println(result.raw())
                         }
                     }
                     else{
