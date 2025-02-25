@@ -60,4 +60,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.v290)
     implementation(libs.converter.gson)
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.0") // Última versión recomendada
+
+
 }
