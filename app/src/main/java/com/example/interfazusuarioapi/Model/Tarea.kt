@@ -9,7 +9,6 @@ data class Tarea(
     var estado: Boolean = false,
     val descripcion: String,
     val usuario: Usuario,
-    val fechaProgramada: Date
 ) {
 
 

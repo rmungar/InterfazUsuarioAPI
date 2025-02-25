@@ -1,11 +1,14 @@
 package com.example.interfazusuarioapi.screens
 
 import android.os.Build
+import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,11 +16,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,6 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,27 +40,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.apirestsegura.ApiRestSegura2.Dto.TareaReturnDTO
 import com.example.interfazusuarioapi.Dto.TareaCrearDTO
+import com.example.interfazusuarioapi.Dto.TareaDTO
+import com.example.interfazusuarioapi.navigation.AppScreens
 import com.example.interfazusuarioapi.retrofit.API
+import com.example.interfazusuarioapi.retrofit.API.Token
 import com.example.interfazusuarioapi.retrofit.API.retrofitService
-import com.example.interfazusuarioapi.retrofit.ApiService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
-import java.util.Date
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PetitionsScreen(option: String, innerPaddingValues: PaddingValues, navController: NavController){
+    var refreshKey by remember { mutableStateOf(0) }
 
     Column(
         modifier = Modifier
@@ -68,8 +71,6 @@ fun PetitionsScreen(option: String, innerPaddingValues: PaddingValues, navContro
                 when (option) {
                     "1" -> {Text("Crear Tarea")}
                     "2" -> {Text("Ver Tareas")}
-                    "3" -> {Text("Marcar Tareas")}
-                    "4" -> {Text("Eliminar Tarea")}
                 }
             },
             actions = {
@@ -77,10 +78,26 @@ fun PetitionsScreen(option: String, innerPaddingValues: PaddingValues, navContro
                     onClick = {
                         navController.popBackStack()
                     },
-                    modifier = Modifier.size(30.dp).padding(start = 0.dp),
+                    modifier = Modifier
+                        .size(30.dp)
+                        .padding(start = 0.dp),
                 ){
                     Icon(Icons.Default.ArrowBack, contentDescription = null)
                 }
+
+                if (option == "2"){
+                    IconButton(
+                        onClick = {
+                            refreshKey++
+                        },
+                        modifier = Modifier
+                            .size(30.dp)
+                            .padding(start = 0.dp),
+                    ){
+                        Icon(Icons.Default.Refresh, contentDescription = null)
+                    }
+                }
+
             },
             colors = TopAppBarColors(
                 containerColor = Color.LightGray,
@@ -96,13 +113,7 @@ fun PetitionsScreen(option: String, innerPaddingValues: PaddingValues, navContro
                 Option1(navController)
             }
             "2" -> {
-                Option2()
-            }
-            "3" -> {
-                Option3()
-            }
-            "4" -> {
-                Option4()
+                Option2(refreshKey)
             }
         }
     }
@@ -148,26 +159,12 @@ fun Option1(navController: NavController) {
         modifier = Modifier.fillMaxWidth(.8f)
     )
 
-    Spacer(modifier = Modifier.height(32.dp))
-
-    OutlinedTextField(
-        value = fecha,
-        onValueChange = { fecha = it },
-        label = { Text("Fecha Limite (yyyy-mm-dd)") },
-        placeholder = {Text("Fecha Limite (yyyy-mm-dd)")},
-        modifier = Modifier.fillMaxWidth(.8f)
-    )
-
-    Spacer(modifier = Modifier.height(32.dp))
+    Spacer(modifier = Modifier.height(64.dp))
 
     Button(
         onClick = {
-
             try {
                 CoroutineScope(Dispatchers.Main).launch{
-                    val fechaActual = Instant.now()
-                    val nuevaFecha = Date.from(fechaActual.plus(3, ChronoUnit.DAYS))
-                    val formatter = SimpleDateFormat("yyyy-MM-dd")
                     val usuarioDTO = retrofitService.getUsuario("Bearer " + API.Token, idUsuario)
                     if (usuarioDTO.isSuccessful){
                         val result = retrofitService.create( "Bearer " + API.Token,
@@ -177,8 +174,7 @@ fun Option1(navController: NavController) {
                                     titulo = titulo,
                                     estado = false,
                                     descripcion = descripcion,
-                                    usuario = usuarioDTO.body()!!,
-                                    fechaProgramada = fecha
+                                    usuario = usuarioDTO.body()!!
                                 )
                             }
                             else{
@@ -199,27 +195,97 @@ fun Option1(navController: NavController) {
                         }
                     }
                     else{
-                        println(usuarioDTO.errorBody())
+                        Toast.makeText(localContext, "No se pudo crear la tarea", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
             catch (e:Exception){
-                println(e)
+                Toast.makeText(localContext, "No se pudo crear la tarea", Toast.LENGTH_SHORT).show()
             }
         }
     ) {
         Text("Crear Tarea")
     }
 }
-@Composable
-fun Option2(){
 
-}
 @Composable
-fun Option3(){
+fun Option2(refreshKey: Int) {
+    val localContext = LocalContext.current
+    val tasks = remember { mutableStateOf<List<TareaReturnDTO>>(emptyList()) }
 
-}
-@Composable
-fun Option4(){
+    // Lanza la llamada a la API solo una vez, utilizando LaunchedEffect
+    LaunchedEffect(refreshKey) {
+        val tareas = retrofitService.getTareas("Bearer " + API.Token)
+        if (tareas.isSuccessful && tareas.body() != null) {
+            // Actualiza el estado con el resultado de la llamada
+            tasks.value = tareas.body()!!
+        } else {
+            // Manejo de errores si la llamada falla
+            println(tareas.raw())
+        }
+    }
 
+    // Mostrar las tareas
+    tasks.value.forEach {
+        ElevatedCard(
+            modifier = Modifier
+                .fillMaxWidth(0.7f)
+                .height(60.dp)
+                .border(
+                    width = 2.dp,
+                    color = if (it.estado) Color.Green else Color.Red,
+                    shape = RoundedCornerShape(20)
+                )
+                .padding(vertical = 10.dp),
+            onClick = {
+                try {
+                    CoroutineScope(Dispatchers.Main).launch {
+
+                        val idTarea = retrofitService.getIdByData(
+                            "Bearer " + Token,
+                            tareaDTO = TareaDTO(
+                                titulo = it.titulo,
+                                estado = it.estado,
+                                usuario = it.usuario,
+
+                            )
+                        )
+
+                        if (idTarea.isSuccessful && idTarea.body() != null){
+
+                            val updateTask = retrofitService.marcarTarea(
+                                "Bearer " + Token,
+                                idTarea.body()!!
+                            )
+
+                            if (updateTask.isSuccessful && updateTask.body() != null) {
+                                it.estado = updateTask.body()!!.estado
+                                Toast.makeText(localContext, "Tarea Modificada", Toast.LENGTH_SHORT).show()
+
+                            }
+                            else{
+                                Toast.makeText(localContext, "No se pudo modificar", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        else{
+                            Toast.makeText(localContext, "La tarea no existe", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                catch (e:Exception){
+                    Toast.makeText(localContext, "No se pudo modificar", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Text("${it.titulo} -> ${if (it.estado) "Completada" else "En proceso"} -> ${it.usuario}")
+            }
+
+        }
+    }
 }

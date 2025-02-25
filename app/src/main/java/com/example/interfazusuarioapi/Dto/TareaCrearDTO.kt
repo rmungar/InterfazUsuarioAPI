@@ -10,8 +10,7 @@ class TareaCrearDTO(
     var estado: Boolean = false,
     val descripcion: String,
     val usuario: UsuarioDTO,
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    val fechaProgramada: String
+
 ) {
 
 }
