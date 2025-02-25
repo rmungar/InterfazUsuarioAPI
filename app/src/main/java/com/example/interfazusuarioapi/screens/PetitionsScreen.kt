@@ -167,18 +167,18 @@ fun Option1(navController: NavController) {
                 CoroutineScope(Dispatchers.Main).launch{
                     val fechaActual = Instant.now()
                     val nuevaFecha = Date.from(fechaActual.plus(3, ChronoUnit.DAYS))
-                    val formatter = SimpleDateFormat("yyyy-mm-dd")
+                    val formatter = SimpleDateFormat("yyyy-MM-dd")
                     val usuarioDTO = retrofitService.getUsuario("Bearer " + API.Token, idUsuario)
                     if (usuarioDTO.isSuccessful){
                         val result = retrofitService.create( "Bearer " + API.Token,
                             if (usuarioDTO.body() != null){
                                 TareaCrearDTO(
-                                    null,
+                                    _id = null,
                                     titulo = titulo,
                                     estado = false,
                                     descripcion = descripcion,
                                     usuario = usuarioDTO.body()!!,
-                                    fechaProgramada = formatter.parse(fecha) ?: nuevaFecha
+                                    fechaProgramada = try { formatter.parse(fecha)} catch (e:Exception) {nuevaFecha}!!
                                 )
                             }
                             else{
@@ -198,7 +198,7 @@ fun Option1(navController: NavController) {
                         }
                     }
                     else{
-                        throw Exception("ME CAGO EN LA PUTA 2")
+                        println(usuarioDTO.errorBody())
                     }
                 }
             }
