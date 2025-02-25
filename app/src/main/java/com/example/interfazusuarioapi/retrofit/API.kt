@@ -1,5 +1,6 @@
 package com.example.interfazusuarioapi.retrofit
 
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -15,6 +16,9 @@ object API {
     val retrofitService: ApiService by lazy {
         getRetrofit().create(ApiService::class.java)
     }
+
+
+
 
     var client = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS) // Tiempo de espera al conectar

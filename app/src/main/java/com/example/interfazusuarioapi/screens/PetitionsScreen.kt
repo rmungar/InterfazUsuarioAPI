@@ -4,7 +4,10 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,6 +16,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -39,7 +43,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.apirestsegura.ApiRestSegura2.Dto.TareaReturnDTO
@@ -52,6 +58,8 @@ import com.example.interfazusuarioapi.retrofit.API.retrofitService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.math.abs
+import kotlin.math.roundToInt
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -212,7 +220,11 @@ fun Option1(navController: NavController) {
 fun Option2(refreshKey: Int) {
     val localContext = LocalContext.current
     val tasks = remember { mutableStateOf<List<TareaReturnDTO>>(emptyList()) }
-
+    var offsetX by remember { mutableStateOf(0f) }
+    val animatedOffsetX by animateFloatAsState(
+        targetValue = offsetX,
+        animationSpec = tween(durationMillis = 300)
+    )
     // Lanza la llamada a la API solo una vez, utilizando LaunchedEffect
     LaunchedEffect(refreshKey) {
         val tareas = retrofitService.getTareas("Bearer " + API.Token)
@@ -229,6 +241,7 @@ fun Option2(refreshKey: Int) {
     tasks.value.forEach {
         ElevatedCard(
             modifier = Modifier
+                .offset { IntOffset(animatedOffsetX.roundToInt(), 0) }
                 .fillMaxWidth(0.7f)
                 .height(60.dp)
                 .border(
@@ -236,7 +249,39 @@ fun Option2(refreshKey: Int) {
                     color = if (it.estado) Color.Green else Color.Red,
                     shape = RoundedCornerShape(20)
                 )
-                .padding(vertical = 10.dp),
+                .padding(vertical = 10.dp)
+                .pointerInput(Unit) {
+                    detectHorizontalDragGestures(
+                        onDragEnd = {
+                            if (abs(offsetX) > 400) {
+                                try {
+                                    CoroutineScope(Dispatchers.Main).launch {
+                                        val result = retrofitService.deleteTarea(
+                                            "Bearer " + Token,
+                                            it._id
+                                        )
+
+                                        if (result.isSuccessful){
+                                            Toast.makeText(localContext, "Tarea borrada", Toast.LENGTH_SHORT).show()
+                                        }
+                                        else{
+                                            Toast.makeText(localContext, "No se pudo borrar", Toast.LENGTH_SHORT).show()
+                                            println(result.raw())
+                                        }
+                                    }
+                                }
+                                catch (e:Exception){
+                                    println(e)
+                                }
+                                // Llamamos a la función para eliminar la tarea
+                            } else {
+                                offsetX = 0f // Si no se supera el umbral, regresa a su posición
+                            }
+                        }
+                    ) { _, dragAmount ->
+                        offsetX += dragAmount
+                    }
+                },
             onClick = {
                 try {
                     CoroutineScope(Dispatchers.Main).launch {

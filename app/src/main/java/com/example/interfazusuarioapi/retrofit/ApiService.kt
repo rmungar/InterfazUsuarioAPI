@@ -8,8 +8,10 @@ import com.apirestsegura.ApiRestSegura2.Model.Tarea
 import com.example.interfazusuarioapi.Dto.TareaCrearDTO
 import com.example.interfazusuarioapi.Dto.TareaDTO
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
@@ -54,13 +56,20 @@ interface ApiService {
     suspend fun getIdByData(
         @Header("Authorization") token: String,
         @Body tareaDTO: TareaDTO
-    ): Response<Int>
+    ): Response<String>
 
 
     @PUT("/tareas/marcar/{idTarea}")
     suspend fun marcarTarea(
         @Header("Authorization") token: String,
-        @Path("idTarea") tareaID: Int
+        @Path("idTarea") tareaID: String
     ): Response<TareaReturnDTO>
+
+
+    @DELETE("/tareas/eliminar/{idTarea}")
+    suspend fun deleteTarea(
+        @Header("Authorization") token: String,
+        @Path("idTarea") tareaID: String
+    ): Response<ResponseBody>
 
 }
