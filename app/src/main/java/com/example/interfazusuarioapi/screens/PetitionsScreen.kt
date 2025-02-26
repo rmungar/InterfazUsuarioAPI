@@ -1,7 +1,6 @@
 package com.example.interfazusuarioapi.screens
 
 import android.os.Build
-import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateFloatAsState
@@ -50,14 +49,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.apirestsegura.ApiRestSegura2.Dto.TareaReturnDTO
 import com.example.interfazusuarioapi.Dto.TareaCrearDTO
-import com.example.interfazusuarioapi.Dto.TareaDTO
-import com.example.interfazusuarioapi.navigation.AppScreens
 import com.example.interfazusuarioapi.retrofit.API
 import com.example.interfazusuarioapi.retrofit.API.Token
 import com.example.interfazusuarioapi.retrofit.API.retrofitService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -128,7 +126,6 @@ fun PetitionsScreen(option: String, innerPaddingValues: PaddingValues, navContro
 
 }
 
-
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Option1(navController: NavController) {
@@ -186,15 +183,19 @@ fun Option1(navController: NavController) {
                                 )
                             }
                             else{
-                                throw Exception("ME CAGO EN LA PUTA")
+                                throw Exception("No se encontró el usuario.")
                             }
                         )
                         if (result.isSuccessful){
-                            Toast.makeText(localContext, "Tarea Creada", Toast.LENGTH_SHORT).show()
+                            withContext(Dispatchers.Main){
+                                Toast.makeText(localContext, "Tarea Creada", Toast.LENGTH_SHORT).show()
+                            }
                             navController.popBackStack()
                         }
                         else{
-                            Toast.makeText(localContext, "No se pudo crear la tarea", Toast.LENGTH_SHORT).show()
+                            withContext(Dispatchers.Main){
+                                Toast.makeText(localContext, "No se pudo crear la tarea", Toast.LENGTH_SHORT).show()
+                            }
                             titulo = ""
                             descripcion = ""
                             idUsuario = ""
@@ -203,12 +204,16 @@ fun Option1(navController: NavController) {
                         }
                     }
                     else{
-                        Toast.makeText(localContext, "No se pudo crear la tarea", Toast.LENGTH_SHORT).show()
+                        CoroutineScope(Dispatchers.Main).launch{
+                            Toast.makeText(localContext, "No se pudo crear la tarea", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }
             catch (e:Exception){
-                Toast.makeText(localContext, "No se pudo crear la tarea", Toast.LENGTH_SHORT).show()
+                CoroutineScope(Dispatchers.Main).launch{
+                    Toast.makeText(localContext, "No se pudo crear la tarea", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     ) {
@@ -220,11 +225,6 @@ fun Option1(navController: NavController) {
 fun Option2(refreshKey: Int) {
     val localContext = LocalContext.current
     val tasks = remember { mutableStateOf<List<TareaReturnDTO>>(emptyList()) }
-    var offsetX by remember { mutableStateOf(0f) }
-    val animatedOffsetX by animateFloatAsState(
-        targetValue = offsetX,
-        animationSpec = tween(durationMillis = 300)
-    )
     // Lanza la llamada a la API solo una vez, utilizando LaunchedEffect
     LaunchedEffect(refreshKey) {
         val tareas = retrofitService.getTareas("Bearer " + API.Token)
@@ -239,6 +239,13 @@ fun Option2(refreshKey: Int) {
 
     // Mostrar las tareas
     tasks.value.forEach {
+
+        var offsetX by remember { mutableStateOf(0f) }
+        val animatedOffsetX by animateFloatAsState(
+            targetValue = offsetX,
+            animationSpec = tween(durationMillis = 300)
+        )
+
         ElevatedCard(
             modifier = Modifier
                 .offset { IntOffset(animatedOffsetX.roundToInt(), 0) }
@@ -249,11 +256,10 @@ fun Option2(refreshKey: Int) {
                     color = if (it.estado) Color.Green else Color.Red,
                     shape = RoundedCornerShape(20)
                 )
-                .padding(vertical = 10.dp)
                 .pointerInput(Unit) {
                     detectHorizontalDragGestures(
                         onDragEnd = {
-                            if (abs(offsetX) > 400) {
+                            if (abs(offsetX) > 200) {
                                 try {
                                     CoroutineScope(Dispatchers.Main).launch {
                                         val result = retrofitService.deleteTarea(
@@ -285,40 +291,28 @@ fun Option2(refreshKey: Int) {
             onClick = {
                 try {
                     CoroutineScope(Dispatchers.Main).launch {
-
-                        val idTarea = retrofitService.getIdByData(
+                        val updateTask = retrofitService.marcarTarea(
                             "Bearer " + Token,
-                            tareaDTO = TareaDTO(
-                                titulo = it.titulo,
-                                estado = it.estado,
-                                usuario = it.usuario,
-
-                            )
+                            it._id
                         )
 
-                        if (idTarea.isSuccessful && idTarea.body() != null){
-
-                            val updateTask = retrofitService.marcarTarea(
-                                "Bearer " + Token,
-                                idTarea.body()!!
-                            )
-
-                            if (updateTask.isSuccessful && updateTask.body() != null) {
-                                it.estado = updateTask.body()!!.estado
+                        if (updateTask.isSuccessful && updateTask.body() != null) {
+                            withContext(Dispatchers.Main) {
                                 Toast.makeText(localContext, "Tarea Modificada", Toast.LENGTH_SHORT).show()
+                            }
 
-                            }
-                            else{
-                                Toast.makeText(localContext, "No se pudo modificar", Toast.LENGTH_SHORT).show()
-                            }
                         }
                         else{
-                            Toast.makeText(localContext, "La tarea no existe", Toast.LENGTH_SHORT).show()
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(localContext, "No se pudo modificar", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
                 }
                 catch (e:Exception){
-                    Toast.makeText(localContext, "No se pudo modificar", Toast.LENGTH_SHORT).show()
+                    CoroutineScope(Dispatchers.Main).launch {
+                        Toast.makeText(localContext, "No se pudo modificar", Toast.LENGTH_SHORT).show()
+                    }
                 }
 
             }
@@ -332,5 +326,6 @@ fun Option2(refreshKey: Int) {
             }
 
         }
+        Spacer(modifier = Modifier.height(10.dp))
     }
 }

@@ -133,44 +133,7 @@ fun MainScreen(token: String, innerPaddingValues: PaddingValues, navController: 
                 )
             }
         }
-        Card(
-            modifier = Modifier.fillMaxWidth(.8f).height(70.dp).padding(bottom = 15.dp),
-            onClick = {
-                navController.navigate(AppScreens.PetitionsScreen.route + "/3")
-            }
-        ) {
-            Row(
-                modifier = Modifier.fillMaxSize(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Text("Completar Tareas")
-                Spacer(Modifier.fillMaxWidth(.6f))
-                Icon(
-                    imageVector = Icons.Default.ArrowForward, contentDescription = null
-                )
-            }
-        }
-        Card(
-            modifier = Modifier.fillMaxWidth(.8f).height(70.dp).padding(bottom = 15.dp),
-            onClick = {
-                navController.navigate(AppScreens.PetitionsScreen.route + "/4")
-            }
-        ) {
-            Row(
-                modifier = Modifier.fillMaxSize(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Text("Eliminar Tareas")
-                Spacer(Modifier.fillMaxWidth(.6f))
-                Icon(
-                    imageVector = Icons.Default.ArrowForward, contentDescription = null
-                )
-            }
-        }
     }
-
 }
 
 @Composable
