@@ -36,6 +36,7 @@ import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -54,6 +55,7 @@ import com.example.interfazusuarioapi.retrofit.API.Token
 import com.example.interfazusuarioapi.retrofit.API.retrofitService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.math.abs
@@ -119,7 +121,9 @@ fun PetitionsScreen(option: String, innerPaddingValues: PaddingValues, navContro
                 Option1(navController)
             }
             "2" -> {
-                Option2(refreshKey)
+                Option2(refreshKey) {
+                    refreshKey ++
+                }
             }
         }
     }
@@ -222,10 +226,11 @@ fun Option1(navController: NavController) {
 }
 
 @Composable
-fun Option2(refreshKey: Int) {
+fun Option2(refreshKey: Int, onDelete : () -> Unit ) {
     val localContext = LocalContext.current
     val tasks = remember { mutableStateOf<List<TareaReturnDTO>>(emptyList()) }
     // Lanza la llamada a la API solo una vez, utilizando LaunchedEffect
+
     LaunchedEffect(refreshKey) {
         val tareas = retrofitService.getTareas("Bearer " + API.Token)
         if (tareas.isSuccessful && tareas.body() != null) {
@@ -239,11 +244,12 @@ fun Option2(refreshKey: Int) {
 
     // Mostrar las tareas
     tasks.value.forEach {
-
-        var offsetX by remember { mutableStateOf(0f) }
+        var deleted by remember { mutableStateOf(false) }
+        var offsetX by remember { mutableFloatStateOf(0f) }
         val animatedOffsetX by animateFloatAsState(
-            targetValue = offsetX,
-            animationSpec = tween(durationMillis = 300)
+            targetValue = if (deleted) if (offsetX > 0) 1000f else -1000f else offsetX,
+            animationSpec = tween(durationMillis = 300),
+            label = "card_slide"
         )
 
         ElevatedCard(
@@ -259,29 +265,23 @@ fun Option2(refreshKey: Int) {
                 .pointerInput(Unit) {
                     detectHorizontalDragGestures(
                         onDragEnd = {
-                            if (abs(offsetX) > 200) {
-                                try {
-                                    CoroutineScope(Dispatchers.Main).launch {
-                                        val result = retrofitService.deleteTarea(
-                                            "Bearer " + Token,
-                                            it._id
-                                        )
+                            if (abs(offsetX) > 50) {
 
-                                        if (result.isSuccessful){
-                                            Toast.makeText(localContext, "Tarea borrada", Toast.LENGTH_SHORT).show()
-                                        }
-                                        else{
-                                            Toast.makeText(localContext, "No se pudo borrar", Toast.LENGTH_SHORT).show()
-                                            println(result.raw())
-                                        }
+                                deleted = true
+                                onDelete()
+                                CoroutineScope(Dispatchers.Main).launch {
+                                    delay(300) // Espera la animación
+                                    val result = retrofitService.deleteTarea("Bearer " + Token, it._id)
+
+                                    if (result.isSuccessful) {
+                                        Toast.makeText(localContext, "Tarea borrada", Toast.LENGTH_SHORT).show()
+                                    }
+                                    else {
+                                        Toast.makeText(localContext, "No se pudo borrar", Toast.LENGTH_SHORT).show()
                                     }
                                 }
-                                catch (e:Exception){
-                                    println(e)
-                                }
-                                // Llamamos a la función para eliminar la tarea
                             } else {
-                                offsetX = 0f // Si no se supera el umbral, regresa a su posición
+                                offsetX = 0f
                             }
                         }
                     ) { _, dragAmount ->
