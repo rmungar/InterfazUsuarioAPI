@@ -1,5 +1,6 @@
 package com.example.interfazusuarioapi.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -54,7 +55,9 @@ fun MainScreen(token: String, innerPaddingValues: PaddingValues, navController: 
            actions = {
                Icon(Icons.Default.Menu, contentDescription = null, modifier = Modifier
                    .size(30.dp)
-                   .padding(start = 0.dp))
+                   .padding(start = 0.dp)
+                   .clickable { navController.popBackStack() }
+               )
            },
            colors = TopAppBarColors(
                containerColor = Color.LightGray,

@@ -1,16 +1,26 @@
 package screens
 
 import android.widget.Toast
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -23,6 +33,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -49,6 +61,7 @@ fun RegisterScreen(innerPaddingValues: PaddingValues, navController: NavControll
     var provincia by remember { mutableStateOf("") }
     var cp by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
+    var admin by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -157,13 +170,27 @@ fun RegisterScreen(innerPaddingValues: PaddingValues, navController: NavControll
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        Row(
+            modifier = Modifier.fillMaxWidth(.8f).wrapContentHeight()
+        ) {
+            SliderButton(admin){
+                admin = !admin
+            }
+
+            Spacer(Modifier.width(10.dp))
+
+            Text("¿El usuario será admin?")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Button(
             onClick = {
 
                 try{
                     isLoading = true
                     CoroutineScope(Dispatchers.IO).launch {
-                        val result = getRegisterResponse(username,password,passwordRepeat,email,calle,num,municipio,provincia,cp)
+                        val result = getRegisterResponse(username,password,passwordRepeat,email,calle,num,municipio,provincia,cp,admin)
                         withContext(Dispatchers.Main) {
                             isLoading = false
                             if (result) {
@@ -199,7 +226,7 @@ fun RegisterScreen(innerPaddingValues: PaddingValues, navController: NavControll
     }
 }
 
-suspend fun getRegisterResponse(username: String, password: String, passwordRepeat: String, email: String, calle: String, numero: String, municipio: String, provincia: String, codigoPostal: String): Boolean{
+suspend fun getRegisterResponse(username: String, password: String, passwordRepeat: String, email: String, calle: String, numero: String, municipio: String, provincia: String, codigoPostal: String, admin: Boolean): Boolean{
 
     try {
         val usuarioResponse = retrofitService.register(
@@ -215,7 +242,7 @@ suspend fun getRegisterResponse(username: String, password: String, passwordRepe
                     provincia,
                     codigoPostal
                 ),
-                "USER"
+                if (!admin) "USER" else "ADMIN"
             )
         )
 
@@ -251,5 +278,31 @@ fun checkData(username: String, password: String, passwordRepeat: String, email:
     }
     else {
         return true
+    }
+}
+
+
+@Composable
+fun SliderButton(admin:Boolean , onClick: ()-> Unit) {
+
+    val offsetX by animateDpAsState(if (admin) 30.dp else 0.dp, label = "")
+
+    Box(
+        modifier = Modifier
+            .width(50.dp)
+            .height(25.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .background(if (admin) Color(0xFF4CAF50) else Color(0xFFB0BEC5))
+            .clickable { onClick() }
+            .padding(5.dp),
+        contentAlignment = Alignment.CenterStart
+    ) {
+        Box(
+            modifier = Modifier
+                .size(10.dp)
+                .offset(x = offsetX)
+                .clip(CircleShape)
+                .background(Color.White)
+        )
     }
 }

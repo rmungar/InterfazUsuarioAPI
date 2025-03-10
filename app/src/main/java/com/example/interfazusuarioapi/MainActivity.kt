@@ -26,26 +26,31 @@ import screens.WelcomeScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            InterfazUsuarioAPITheme {
-                var showWelcomeScreen by remember { mutableStateOf(true) }
+        try{
+            super.onCreate(savedInstanceState)
+            enableEdgeToEdge()
+            setContent {
+                InterfazUsuarioAPITheme {
+                    var showWelcomeScreen by remember { mutableStateOf(true) }
 
-                Scaffold { innerPadding ->
-                    if (showWelcomeScreen) {
-                        WelcomeScreen(innerPadding)
+                    Scaffold { innerPadding ->
+                        if (showWelcomeScreen) {
+                            WelcomeScreen(innerPadding)
 
-                        LaunchedEffect(showWelcomeScreen){
-                            delay(2000)
-                            showWelcomeScreen = false
+                            LaunchedEffect(showWelcomeScreen){
+                                delay(2000)
+                                showWelcomeScreen = false
+                            }
                         }
-                    }
-                    else{
-                        AppNavigation(innerPadding)
+                        else{
+                            AppNavigation(innerPadding)
+                        }
                     }
                 }
             }
+        }
+        catch (e:Exception){
+            println(e)
         }
     }
 }

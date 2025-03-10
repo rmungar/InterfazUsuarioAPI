@@ -28,6 +28,12 @@ interface ApiService {
         @Body requestBody: LoginUsuarioDTO
     ): Response<TokenResponse>
 
+
+    @GET("/usuarios/get")
+    suspend fun getAllUsers(
+        @Header("Authorization") token: String,
+    ): Response<List<UsuarioDTO>>
+
     @POST("/usuarios/register")
     suspend fun register(
         @Body requestBody: UsuarioRegisterDTO
