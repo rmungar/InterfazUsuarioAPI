@@ -83,7 +83,7 @@ Documento donde vamos a almacenar la información sobre las tareas que se les as
 
 Antes de empezar, en la base de datos contamos con los siguientes datos:
 
-![contenidoBD.png](src/main/resources/images/contenidoBD.png)
+[contenidoBD.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FcontenidoBD.png)
 
 O lo que es lo mismo, un único usuario sobre el que probar el login.
 
@@ -96,13 +96,13 @@ En esta prueba vamos a simular lo que sería un intento de login válido, es dec
 
 ## CAPTURAS
 
-![datosLoginCorrecto.png](src/main/resources/images/Login/datosLoginCorrecto.png)
+![datosLoginCorrecto.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FLogin%2FdatosLoginCorrecto.png)
 
 ### **Username**: prueba
 
 ### **Password**: passwordPrueba
 
-![loginCorrecto.png](src/main/resources/images/Login/loginCorrecto.png)
+![loginCorrecto.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FLogin%2FloginCorrecto.png)
 
 
 ***
@@ -123,7 +123,7 @@ Esto puede deberse a:
 
 ### Credenciales incorrectas
 
-![loginCredencialesIncorrectas.png](src/main/resources/images/Login/loginCredencialesIncorrectas.png)
+![loginCredencialesIncorrectas.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FLogin%2FloginCredencialesIncorrectas.png)
 
 ### **Username**: Pepe > No existe en la base de datos.
 
@@ -133,7 +133,7 @@ Esto puede deberse a:
 
 ### Longitud de campos no cumplida
 
-![loginLongitudNoCumplida.png](src/main/resources/images/Login/loginLongitudNoCumplida.png)
+![loginLongitudNoCumplida.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FLogin%2FloginLongitudNoCumplida.png)
 
 
 ### **Username**: Pepe > No existe en la base de datos.
@@ -144,7 +144,7 @@ Esto puede deberse a:
 
 ### Campos sin rellenar
 
-![loginConCampoSinRellenar.png](src/main/resources/images/Login/loginConCampoSinRellenar.png)
+![loginConCampoSinRellenar.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FLogin%2FloginConCampoSinRellenar.png)
 
 ### **Username**: Pepe > No existe en la base de datos.
 
@@ -160,15 +160,15 @@ En esta prueba vamos a simular un intento de registro válido. Esto se llevará 
 
 ## CAPTURAS
 
-![datosRegisterCorrecto.png](src/main/resources/images/Register/datosRegisterCorrecto.png)
+![datosRegisterCorrecto.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FRegister%2FdatosRegisterCorrecto.png)
 
-![registerExitoso.png](src/main/resources/images/Register/registerExitoso.png)
+![registerExitoso.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FRegister%2FregisterExitoso.png)
 
-![comprobacionRegsiter.png](src/main/resources/images/Register/comprobacionRegister.png)
+![comprobacionRegister.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FRegister%2FcomprobacionRegister.png)
 
-![comprobacionRegisterExitoso2.png](src/main/resources/images/Register/comprobacionRegisterExitoso2.png)
+![comprobacionRegisterExitoso2.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FRegister%2FcomprobacionRegisterExitoso2.png)
 
-![contenidoBD2.png](src/main/resources/images/contenidoBD2.png)
+![contenidoBD2.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FcontenidoBD2.png)
 
 ***
 # REGISTERS FALLIDOS
@@ -190,55 +190,55 @@ Esto puede deberse a:
 
 ### Nombre de usuario duplicado
 
-![nombreUsuarioDuplicado.png](src/main/resources/images/Register/nombreUsuarioDuplicado.png)
+![nombreUsuarioDuplicado.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FRegister%2FnombreUsuarioDuplicado.png)
 
-![logCat1.png](src/main/resources/images/Register/logCat1.png)
+![logCat1.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FRegister%2FlogCat1.png)
 
 ***
 
 ### Campos sin rellenar
 
-![campoNoRellenado.png](src/main/resources/images/Register/campoNoRellenado.png)
+![campoNoRellenado.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FRegister%2FcampoNoRellenado.png)
 
 ***
 
 ### Valor equivocado 1
 
-![valorEquivocado1.png](src/main/resources/images/Register/valorEquivocado1.png)
+![valorEquivocado1.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FRegister%2FvalorEquivocado1.png)
 
-![logCat2.png](src/main/resources/images/Register/logCat2.png)
+![logCat2.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FRegister%2FlogCat2.png)
 
 ***
 
 ### Valor equivocado 2
 
-![valorEquivocado2.png](src/main/resources/images/Register/valorEquivocado2.png)
+![valorEquivocado2.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FRegister%2FvalorEquivocado2.png)
 
-![logCat3.png](src/main/resources/images/Register/logCat3.png)
+![logCat3.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FRegister%2FlogCat3.png)
 
 ***
 
 ### Provincia no existe
 
-![provinciaNoExiste.png](src/main/resources/images/Register/provinciaNoExiste.png)
+![provinciaNoExiste.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FRegister%2FprovinciaNoExiste.png)
 
-![logCat4.png](src/main/resources/images/Register/logCat4.png)
+![logCat4.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FRegister%2FlogCat4.png)
 
 ***
 
 ### Municipio no pertenece a la provincia
 
-![municipioNoPertenece.png](src/main/resources/images/Register/municipioNoPertenece.png)
+![municipioNoPertenece.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FRegister%2FmunicipioNoPertenece.png)
 
-![logCat5.png](src/main/resources/images/Register/logCat5.png)
+![logCat5.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FRegister%2FlogCat5.png)
 
 ***
 
 ### Contraseñas no coinciden
 
-![passwordNoCoinciden.png](src/main/resources/images/Register/passwordNoCoinciden.png)
+![passwordNoCoinciden.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FRegister%2FpasswordNoCoinciden.png)
 
-![logCat6.png](src/main/resources/images/Register/logCat6.png)
+![logCat6.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FRegister%2FlogCat6.png)
 
 ***
 
@@ -248,7 +248,7 @@ Esto puede deberse a:
 ## ANTES DE EMPEZAR
 
 Antes de empezar, en la base de datos tenemos los siguientes datos:
-![contenidoBD3.png](src%2Fmain%2Fresources%2Fimages%2FcontenidoBD3.png)
+![contenidoBD3.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FcontenidoBD3.png)
 
 
 ## CREAR TAREA EXITOSA
@@ -258,7 +258,7 @@ Vamos a crear una tarea para nuestro usuario (el mismo que en las pruebas superi
 
 ### CAPTURAS
 
-![createTarea.png](src%2Fmain%2Fresources%2Fimages%2FTareas%2FCreate%2FcreateTarea.png)
+![createTarea.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FCreate%2FcreateTarea.png)
 
 ***
 
@@ -277,19 +277,19 @@ La creación de una tarea puede fallar por varios motivos:
 
 ## TÍTULO VACÍO
 
-![createSinTitulo.png](src%2Fmain%2Fresources%2Fimages%2FTareas%2FCreate%2FcreateSinTitulo.png)
+![createSinTitulo.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FCreate%2FcreateSinTitulo.png)
 
 ***
 
 ## DESCRIPCIÓN VACÍA
 
-![createSinDesc.png](src%2Fmain%2Fresources%2Fimages%2FTareas%2FCreate%2FcreateSinDesc.png)
+![createSinDesc.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FCreate%2FcreateSinDesc.png)
 
 ***
 
 ## USUARIO NO EXISTE
 
-![createUsuarioNoExiste.png](src%2Fmain%2Fresources%2Fimages%2FTareas%2FCreate%2FcreateUsuarioNoExiste.png)
+![createUsuarioNoExiste.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FCreate%2FcreateUsuarioNoExiste.png)
 
 ***
 
@@ -297,16 +297,16 @@ La creación de una tarea puede fallar por varios motivos:
 
 **CABE DESTACAR QUE HASTA AHORA HEMOS ESTADO UTILIZANDO UN USUARIO ADMIN PARA LAS PRUEBAS, POR LO QUE VAMOS A USAR UN USUARIO USER PARA ESTA PRUEBA**
 
-![contenidoBD4.png](src%2Fmain%2Fresources%2Fimages%2FcontenidoBD4.png)
+![contenidoBD4.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FcontenidoBD4.png)
 
 
-![createDeUserAdmin.png](src%2Fmain%2Fresources%2Fimages%2FTareas%2FCreate%2FcreateDeUserAdmin.png)
+![createDeUserAdmin.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FCreate%2FcreateDeUserAdmin.png)
 
 ***
 
 ## TAREA CON ID REPETIDO
 
-![createIdRepetido.png](src%2Fmain%2Fresources%2Fimages%2FTareas%2FCreate%2FcreateIdRepetido.png)
+![createIdRepetido.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FCreate%2FcreateIdRepetido.png)
 
 
 ***
@@ -317,8 +317,8 @@ La creación de una tarea puede fallar por varios motivos:
 
 Antes de empezar, este es el contenido de la base de datos:
 
-![contenidoBD5.png](src/main/resources/images/contenidoBD5.png)
-![contenidoBD6.png](src/main/resources/images/contenidoBD6.png)
+![contenidoBD5.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FcontenidoBD5.png)
+![contenidoBD6.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FcontenidoBD6.png)
 
 ## DESCRIPCIÓN
 
@@ -328,13 +328,13 @@ A continuación, vamos a obtener todas las tareas posibles para un usuario ADMIN
 
 ### USUARIO ADMIN
 
-![getUserAdmin.png](src/main/resources/images/Tareas/Get/getUserAdmin.png)
+![getUserAdmin.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FGet%2FgetUserAdmin.png)
 
 ***
 
 ### USUARIO USER
 
-![getUserUser.png](src/main/resources/images/Tareas/Get/getUserUser.png)
+![getUserUser.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FGet%2FgetUserUser.png)
 
 ***
 
@@ -346,7 +346,7 @@ En este caso, este endpoint no puede fallar, salvo que no se halla realizado el 
 
 ## CAPTURAS
 
-![getSinLogin.png](src/main/resources/images/Tareas/Get/getSinLogin.png)
+![getSinLogin.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FGet%2FgetSinLogin.png)
 
 ***
 
@@ -360,31 +360,31 @@ Para esta prueba vamos a intentar actualizar el estado de una tarea en concreto 
 
 ### USUARIO ADMIN (TAREA PROPIA)
 
-![updateAdmin.png](src/main/resources/images/Tareas/Update/updateAdminPropia.png)
+![updateAdminPropia.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FUpdate%2FupdateAdminPropia.png)
 
-![updateAdminPrueba1.png](src/main/resources/images/Tareas/Update/updateAdminPrueba1.png)
+![updateAdminPrueba1.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FUpdate%2FupdateAdminPrueba1.png)
 
-![updateAdminPrueba2.png](src/main/resources/images/Tareas/Update/updateAdminPrueba2.png)
+![updateAdminPrueba2.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FUpdate%2FupdateAdminPrueba2.png)
 
 *** 
 
 ### USUARIO ADMIN (TAREA AJENA)
 
-![updateAdminAjena.png](src/main/resources/images/Tareas/Update/updateAdminAjena.png)
+![updateAdminAjena.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FUpdate%2FupdateAdminAjena.png)
 
-![updateAdminPrueba3.png](src/main/resources/images/Tareas/Update/updateAdminPrueba3.png)
+![updateAdminPrueba3.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FUpdate%2FupdateAdminPrueba3.png)
 
-![updateAdminPrueba4.png](src/main/resources/images/Tareas/Update/updateAdminPrueba4.png)
+![updateAdminPrueba4.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FUpdate%2FupdateAdminPrueba4.png)
 
 ***
 
 ### USUARIO USER (TAREA PROPIA)
 
-![updateUserPropia.png](src/main/resources/images/Tareas/Update/updateUserPropia.png)
+![updateUserPropia.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FUpdate%2FupdateUserPropia.png)
 
-![updateUserPrueba1.png](src/main/resources/images/Tareas/Update/updateUserPrueba1.png)
+![updateUserPrueba1.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FUpdate%2FupdateUserPrueba1.png)
 
-![updateUserPrueba2.png](src/main/resources/images/Tareas/Update/updateUserPrueba2.png)
+![updateUserPrueba2.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FUpdate%2FupdateUserPrueba2.png)
 
 ***
 
@@ -398,13 +398,13 @@ Hay que tener en cuenta que este endpoint puede fallar por lo siguiente:
 
 ### USUARIO USER (TAREA AJENA)
 
-![updateUserAjena.png](src/main/resources/images/Tareas/Update/updateUserAjena.png)
+![updateUserAjena.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FUpdate%2FupdateUserAjena.png)
 
 ***
 
 ### LA TAREA NO EXISTE
 
-![updateTareaNoExiste.png](src/main/resources/images/Tareas/Update/updateTareaNoExiste.png)
+![updateTareaNoExiste.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FUpdate%2FupdateTareaNoExiste.png)
 
 ***
 
@@ -418,11 +418,11 @@ Igual que el update y el create, el usuario con rol USER no va a poder eliminar 
 
 Borraremos la primera tarea pasando el id por parámetro en la petición.
 
-![contenidoBD2.png](src/main/resources/images/contenidoBD2.png)
+![contenidoBD2.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FcontenidoBD2.png)
 
-![deleteAdminPropia.png](src/main/resources/images/Tareas/Delete/deleteAdminPropia.png)
+![deleteAdminPropia.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FDelete%2FdeleteAdminPropia.png)
 
-![deleteAdminPropiaPrueba.png](src/main/resources/images/Tareas/Delete/deleteAdminPropiaPrueba.png)
+![deleteAdminPropiaPrueba.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FDelete%2FdeleteAdminPropiaPrueba.png)
 
 ***
 
@@ -430,9 +430,9 @@ Borraremos la primera tarea pasando el id por parámetro en la petición.
 
 En este caso borraremos la tarea que pertenece al usuario "usuario".
 
-![deleteAdminAjena.png](src/main/resources/images/Tareas/Delete/deleteAdminAjena.png)
+![deleteAdminAjena.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FDelete%2FdeleteAdminAjena.png)
 
-![deleteAdminAjenaPrueba.png](src/main/resources/images/Tareas/Delete/deleteAdminAjenaPrueba.png)
+![deleteAdminAjenaPrueba.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FDelete%2FdeleteAdminAjenaPrueba.png)
 
 ***
 
@@ -440,9 +440,9 @@ En este caso borraremos la tarea que pertenece al usuario "usuario".
 
 Primero creamos una tarea, ya que no quedan tareas de este usuario.
 
-![deleteUserPropia1.png](src/main/resources/images/Tareas/Delete/deleteUserPropia1.png)
+![deleteUserPropia1.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FDelete%2FdeleteUserPropia1.png)
 
-![deleteUserPropia2.png](src/main/resources/images/Tareas/Delete/deleteUserPropia2.png)
+![deleteUserPropia2.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FDelete%2FdeleteUserPropia2.png)
 
 ***
 
@@ -458,7 +458,7 @@ Borrar una tarea puede fallar debido a lo siguiente:
 
 Para esta prueba vamos a borrar cualquier tarea que no le pertenezca a nuestro usuario.
 
-![deleteUserAjena.png](src/main/resources/images/Tareas/Delete/deleteUserAjena.png)
+![deleteUserAjena.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FDelete%2FdeleteUserAjena.png)
 
 ***
 
@@ -466,4 +466,4 @@ Para esta prueba vamos a borrar cualquier tarea que no le pertenezca a nuestro u
 
 Ingresando un id de tarea que no existe, veremos que nos devuelve un error 400.
 
-![deleteTareaNoExiste.png](src/main/resources/images/Tareas/Delete/deleteTareaNoExiste.png)
+![deleteTareaNoExiste.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FTareas%2FDelete%2FdeleteTareaNoExiste.png)
