@@ -83,7 +83,7 @@ Documento donde vamos a almacenar la información sobre las tareas que se les as
 
 Antes de empezar, en la base de datos contamos con los siguientes datos:
 
-[contenidoBD.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FcontenidoBD.png)
+![contenidoBD.png](app%2Fsrc%2Fmain%2Fjava%2Fcom%2Fexample%2Finterfazusuarioapi%2Fimages%2FcontenidoBD.png)
 
 O lo que es lo mismo, un único usuario sobre el que probar el login.
 
