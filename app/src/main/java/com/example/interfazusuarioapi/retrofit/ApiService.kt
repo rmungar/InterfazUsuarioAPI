@@ -19,6 +19,9 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 
+/**
+ * Interfaz que contiene todas las funciones que conectan con la base de datos y realizan las peticiones.
+ */
 interface ApiService {
 
 

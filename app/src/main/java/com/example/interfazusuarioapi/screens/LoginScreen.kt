@@ -36,6 +36,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+/**
+ * Pantalla del login en la aplicación, contiene 2 campos a rellenar por el usuario y realizará la petición tras las comprobaciones.
+ */
 @Composable
 fun LoginScreen(innerPaddingValues: PaddingValues, navController: NavController) {
     val localContext = LocalContext.current
@@ -79,6 +82,7 @@ fun LoginScreen(innerPaddingValues: PaddingValues, navController: NavController)
         Button(
             onClick = {
                 try{
+                    // Petición a la base de datos con los datos del usuario.
                     isLoading = true
                     CoroutineScope(Dispatchers.IO).launch {
                         val result = getLoginToken(username, password)
@@ -118,7 +122,7 @@ fun LoginScreen(innerPaddingValues: PaddingValues, navController: NavController)
     }
 }
 
-
+// Comprueba los datos introducidos por el usuario para que cumplan el requisito de longitud
 fun comprobarUsuarioPassword(username: String?, password: String?): Boolean {
 
     if(!username.isNullOrBlank() && !password.isNullOrBlank()) {
@@ -131,7 +135,7 @@ fun comprobarUsuarioPassword(username: String?, password: String?): Boolean {
     }
 }
 
-
+// Obtiene el token del login y actualiza el valor donde corresponda.
 suspend fun getLoginToken(username: String, password: String): String {
 
     try {

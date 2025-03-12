@@ -35,6 +35,9 @@ import androidx.navigation.NavController
 import com.example.interfazusuarioapi.navigation.AppScreens
 import com.example.interfazusuarioapi.retrofit.API
 
+/**
+ * Pantalla principal de la aplicacion, en la que se mostraran distintas opciones para que el usuario seleccione la que quiera.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(token: String, innerPaddingValues: PaddingValues, navController: NavController){

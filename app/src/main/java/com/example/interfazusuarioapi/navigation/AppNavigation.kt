@@ -14,7 +14,9 @@ import screens.LoginScreen
 import screens.RegisterScreen
 import screens.WelcomeScreen
 
-
+/**
+ * Navegación de la aplicación
+ */
 @Composable
 fun AppNavigation(innerPaddingValues: PaddingValues) {
     val navControlador = rememberNavController()

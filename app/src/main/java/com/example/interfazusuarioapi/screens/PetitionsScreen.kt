@@ -58,6 +58,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.apirestsegura.ApiRestSegura2.Dto.TareaReturnDTO
+import com.apirestsegura.ApiRestSegura2.Dto.UsuarioDTO
 import com.example.interfazusuarioapi.Dto.TareaCrearDTO
 import com.example.interfazusuarioapi.retrofit.API
 import com.example.interfazusuarioapi.retrofit.API.Token
@@ -70,6 +71,10 @@ import kotlinx.coroutines.withContext
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
+/**
+ * Función que engloba la página desde la cual se van a realizar las peticiones.
+ * En función de la opcion seleccionada en el menú, se cambiará el contenido de la pantalla acordemente.
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -138,7 +143,9 @@ fun PetitionsScreen(option: String, innerPaddingValues: PaddingValues, navContro
     }
 
 }
-
+/**
+ * Esta función es una de las dos mencionada anteriormente. En este caso, el contenido de esta página está relacionado con crear una tarea. Por lo que las llamdas o pas peticiones seran acorde a esto.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -149,15 +156,15 @@ fun Option1(navController: NavController) {
     var selectedUsuario by remember { mutableStateOf("") } // El usuario seleccionado
     var usuariosList by remember { mutableStateOf<List<String>>(emptyList()) } // Lista de usuarios
     var expanded by remember { mutableStateOf(false) } // Control de expansión del dropdown
-
+    var fullUsuariosList by remember { mutableStateOf<List<UsuarioDTO>>(emptyList()) }
     // Obtener los usuarios de la base de datos
     LaunchedEffect(Unit) {
         try {
             CoroutineScope(Dispatchers.Main).launch {
                 val usuariosResponse = retrofitService.getAllUsers("Bearer " + API.Token)
                 if (usuariosResponse.isSuccessful && usuariosResponse.body() != null) {
-                    usuariosList = usuariosResponse.body()!!.map { it.email }
-                    print(usuariosList)
+                    usuariosList = usuariosResponse.body()!!.map { it.username }
+                    fullUsuariosList = usuariosResponse.body()!!
                 }
             }
         } catch (e: Exception) {
@@ -193,7 +200,9 @@ fun Option1(navController: NavController) {
     ) {
         OutlinedTextField(
             value = selectedUsuario,
-            onValueChange = { selectedUsuario = it },
+            onValueChange = {
+                selectedUsuario = it
+                            },
             label = { Text("Email Usuario") },
             placeholder = { Text("Email Usuario") },
             readOnly = true, // Hacemos el campo solo de lectura
@@ -207,7 +216,7 @@ fun Option1(navController: NavController) {
             onDismissRequest = { expanded = false },
             scrollState = rememberScrollState(0)
         ) {
-            // Iteramos sobre la lista de usuarios y los mostramos como opciones
+
             usuariosList.forEach { usuario ->
                 DropdownMenuItem(
                     modifier = Modifier.fillMaxWidth(.8f),
@@ -227,8 +236,10 @@ fun Option1(navController: NavController) {
 
     Button(
         onClick = {
+            // Realiza la peticion a la base de datos para obterber si el usuario existe y en caso positivo, realizar la peticion para crear la tarea.
             try {
                 CoroutineScope(Dispatchers.Main).launch {
+                    selectedUsuario = fullUsuariosList.find { usuario-> usuario.username == selectedUsuario }!!.email
                     val usuarioDTO = retrofitService.getUsuario("Bearer " + API.Token, selectedUsuario)
                     if (usuarioDTO.isSuccessful) {
                         val result = retrofitService.create(
@@ -275,12 +286,14 @@ fun Option1(navController: NavController) {
     }
 }
 
-
+/**
+ * Esta función es una de las dos mencionada anteriormente. En este caso, el contenido de esta página está relacionado con la visualización de las tareas, la modificacion y la eliminación.
+ * Por lo que las llamdas o pas peticiones seran acorde a esto.
+ */
 @Composable
 fun Option2(refreshKey: Int, onDelete : () -> Unit ) {
     val localContext = LocalContext.current
     val tasks = remember { mutableStateOf<List<TareaReturnDTO>>(emptyList()) }
-    // Lanza la llamada a la API solo una vez, utilizando LaunchedEffect
 
     LaunchedEffect(refreshKey) {
         val tareas = retrofitService.getTareas("Bearer " + API.Token)
@@ -307,8 +320,8 @@ fun Option2(refreshKey: Int, onDelete : () -> Unit ) {
                 .offset { IntOffset(animatedOffsetX.roundToInt(), 0) }
                 .fillMaxWidth(0.9f)
                 .padding(16.dp)
-                .clickable { /* Aquí va la acción al hacer click, si es necesario */ }
                 .pointerInput(Unit) {
+                    // Lógica para controlar el deslizamiento de las tarjetas
                     detectHorizontalDragGestures(
                         onDragEnd = {
                             if (abs(offsetX) > 50) {
@@ -354,6 +367,7 @@ fun Option2(refreshKey: Int, onDelete : () -> Unit ) {
                     IconButton(
                         onClick = {
                             try {
+                                // Marcamos una tarea como completada con la siguiente petición
                                 CoroutineScope(Dispatchers.Main).launch {
                                     val updateTask = retrofitService.marcarTarea(
                                         "Bearer " + Token,

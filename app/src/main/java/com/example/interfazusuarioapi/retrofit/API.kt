@@ -5,6 +5,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
+/**
+ * Objeto encargado de manejar toda la logica necesaria
+ */
+
 object API {
 
     private const val BASE_URL = "https://proyectofinalapiinterfaz.onrender.com"

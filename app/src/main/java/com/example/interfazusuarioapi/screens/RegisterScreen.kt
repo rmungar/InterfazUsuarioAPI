@@ -48,6 +48,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+/**
+ * Pantalla para realizar el registro de un nuevo usuario.
+ */
 @Composable
 fun RegisterScreen(innerPaddingValues: PaddingValues, navController: NavController) {
     val localContext = LocalContext.current
@@ -226,6 +229,7 @@ fun RegisterScreen(innerPaddingValues: PaddingValues, navController: NavControll
     }
 }
 
+// Llamada a la petición para registrar a un usuario con los datos ingresados.
 suspend fun getRegisterResponse(username: String, password: String, passwordRepeat: String, email: String, calle: String, numero: String, municipio: String, provincia: String, codigoPostal: String, admin: Boolean): Boolean{
 
     try {
@@ -271,7 +275,7 @@ suspend fun getRegisterResponse(username: String, password: String, passwordRepe
         return false
     }
 }
-
+// Comprobaciones en los campos que ha ingresado el usuario
 fun checkData(username: String, password: String, passwordRepeat: String, email: String, calle: String, numero: String, municipio: String, provincia: String, codigoPostal: String): Boolean {
     if (username.isEmpty() || password.isEmpty() || passwordRepeat.isEmpty() || email.isEmpty() || calle.isEmpty() || numero.isEmpty() || municipio.isEmpty() || provincia.isEmpty() || codigoPostal.isEmpty()) {
         return false
@@ -281,7 +285,7 @@ fun checkData(username: String, password: String, passwordRepeat: String, email:
     }
 }
 
-
+// Lógica del boton para determina si el usuario va a ser admin o no.
 @Composable
 fun SliderButton(admin:Boolean , onClick: ()-> Unit) {
 
