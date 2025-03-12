@@ -1,5 +1,7 @@
 package navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
@@ -17,6 +19,7 @@ import screens.WelcomeScreen
 /**
  * Navegación de la aplicación
  */
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavigation(innerPaddingValues: PaddingValues) {
     val navControlador = rememberNavController()
